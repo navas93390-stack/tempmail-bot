@@ -1,0 +1,2 @@
+# tempmail-bot
+mail
