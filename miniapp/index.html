@@ -2,585 +2,238 @@
 
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>TempMail</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:       #0a0a0f;
-      --surface:  #111118;
-      --border:   #1e1e2e;
-      --accent:   #00e5a0;
-      --accent2:  #0088ff;
-      --text:     #e8e8f0;
-      --muted:    #6b6b85;
-      --danger:   #ff4466;
-      --mono:     'Space Mono', monospace;
-      --sans:     'DM Sans', sans-serif;
-    }
-
-```
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  min-height: 100vh;
-  overflow-x: hidden;
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<title>TempMail</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#050508;--card:#0e0e16;--card2:#16161f;--border:#ffffff08;--border2:#4fffb022;
+  --green:#4fffb0;--green2:#4fffb010;--green3:#4fffb030;--red:#ff4f6b;--red2:#ff4f6b12;
+  --text:#eeeef5;--muted:#5a5a72;--dim:#2a2a38;
+  --mono:'Space Mono',monospace;--sans:'Inter',sans-serif;
 }
-
-/* ── Noise overlay ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
-
-.app { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 16px; }
-
-/* ── Header ── */
-.header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 0 24px;
-}
-.logo {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-}
-.header-title { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: 0.05em; }
-.header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.status-dot {
-  margin-left: auto;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-/* ── Email card ── */
-.email-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  position: relative;
-  overflow: hidden;
-}
-.email-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-}
-.email-label {
-  font-size: 10px;
-  font-family: var(--mono);
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
-}
-.email-address {
-  font-family: var(--mono);
-  font-size: 14px;
-  color: var(--accent);
-  word-break: break-all;
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-.email-address.loading {
-  color: var(--muted);
-  animation: blink 1.2s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-.copy-btn {
-  width: 100%;
-  padding: 11px;
-  background: transparent;
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  color: var(--accent);
-  font-family: var(--mono);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.copy-btn:hover { background: rgba(0,229,160,0.08); }
-.copy-btn.copied {
-  border-color: var(--accent2);
-  color: var(--accent2);
-  background: rgba(0,136,255,0.08);
-}
-
-/* ── Inbox ── */
-.inbox-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-.inbox-title {
-  font-family: var(--mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-}
-.refresh-info {
-  font-size: 10px;
-  color: var(--muted);
-  display: flex; align-items: center; gap: 5px;
-}
-.refresh-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent2);
-  animation: pulse 3s ease-in-out infinite;
-}
-.badge {
-  background: var(--accent);
-  color: #000;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--mono);
-  padding: 2px 7px;
-  border-radius: 20px;
-  margin-left: 8px;
-}
-
-/* ── Email list ── */
-.email-list { display: flex; flex-direction: column; gap: 8px; }
-
-.email-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: all 0.18s;
-  animation: slideIn 0.3s ease forwards;
-}
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.email-item:hover { border-color: var(--accent); background: #13131c; }
-.email-item.unread { border-left: 3px solid var(--accent); }
-
-.email-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.email-from {
-  font-size: 12px;
-  color: var(--accent2);
-  font-family: var(--mono);
-  max-width: 60%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.email-time {
-  font-size: 10px;
-  color: var(--muted);
-  font-family: var(--mono);
-}
-.email-subject {
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.email-preview {
-  font-size: 11px;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.ttl-bar {
-  height: 2px;
-  background: var(--border);
-  border-radius: 2px;
-  margin-top: 10px;
-  overflow: hidden;
-}
-.ttl-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border-radius: 2px;
-  transition: width 1s linear;
-}
-
-/* ── Empty state ── */
-.empty {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--muted);
-}
-.empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
-.empty-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-.empty-sub { font-size: 12px; line-height: 1.6; }
-
-/* ── Detail modal ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  z-index: 100;
-  display: none;
-  align-items: flex-end;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px 20px 0 0;
-  padding: 20px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
-  animation: slideUp 0.3s ease;
-}
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
-.modal-handle {
-  width: 36px; height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 0 auto 20px;
-}
-.modal-from { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-.modal-subject {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  line-height: 1.4;
-}
-.modal-date { font-size: 11px; color: var(--muted); margin-bottom: 20px; }
-.modal-divider { height: 1px; background: var(--border); margin-bottom: 16px; }
-.modal-body {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #c8c8d8;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.modal-close {
-  position: absolute;
-  top: 20px; right: 20px;
-  background: var(--border);
-  border: none;
-  color: var(--muted);
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-}
-
-/* ── Error ── */
-.error-banner {
-  background: rgba(255,68,102,0.1);
-  border: 1px solid rgba(255,68,102,0.3);
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-size: 12px;
-  color: var(--danger);
-  margin-bottom: 12px;
-  display: none;
-}
-.error-banner.show { display: block; }
-```
-
-  </style>
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:420px;margin:0 auto;padding:0 0 100px}
+#loader{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s ease}
+#loader.hide{opacity:0;pointer-events:none}
+.loader-ring{width:40px;height:40px;border:2px solid var(--dim);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+.loader-txt{font-family:var(--mono);font-size:13px;color:var(--green);letter-spacing:.1em}
+@keyframes spin{to{transform:rotate(360deg)}}
+.header{padding:24px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;background:var(--green2);border:1px solid var(--green3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-name{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green);letter-spacing:.08em}
+.brand-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.live{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:5px 10px;border-radius:20px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.email-box{margin:20px 20px 0;background:var(--card);border:1px solid var(--border2);border-radius:16px;overflow:hidden;position:relative}
+.email-box::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.email-top{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.email-label{font-size:9px;font-weight:600;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.email-addr{font-family:var(--mono);font-size:14px;color:var(--green);word-break:break-all;line-height:1.5;min-height:21px}
+.email-addr.loading{color:var(--dim);animation:pulse 1.2s ease infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.email-bottom{display:flex}
+.btn-copy{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;background:transparent;border:none;border-right:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .15s}
+.btn-copy:active{background:var(--green2)}
+.btn-copy.done{color:var(--green)}
+.btn-regen{display:flex;align-items:center;justify-content:center;width:52px;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:all .15s}
+.btn-regen:active{color:var(--green)}
+.btn-regen svg{transition:transform .4s}
+.btn-regen.spin svg{animation:spin .5s linear}
+.ttl{margin:10px 20px 0;display:flex;align-items:center;gap:8px}
+.ttl-bar{flex:1;height:2px;background:var(--dim);border-radius:1px;overflow:hidden}
+.ttl-fill{height:100%;background:var(--green);border-radius:1px;animation:drain 1200s linear forwards}
+@keyframes drain{from{width:100%}to{width:0%}}
+.ttl-txt{font-size:10px;color:var(--muted);white-space:nowrap}
+.inbox-head{padding:24px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+.inbox-title{font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.badge{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:20px;background:var(--card);border:1px solid var(--border);color:var(--muted);transition:all .2s}
+.badge.on{background:var(--green2);border-color:var(--green3);color:var(--green)}
+.refresh-row{display:flex;align-items:center;gap:6px;padding:0 20px 12px}
+.refresh-bar{width:60px;height:1px;background:var(--dim);border-radius:1px;overflow:hidden}
+.refresh-fill{height:100%;background:var(--green);animation:refill 5s linear infinite}
+@keyframes refill{from{width:100%}to{width:0%}}
+.refresh-txt{font-size:10px;color:var(--dim)}
+.list{padding:0 20px;display:flex;flex-direction:column;gap:8px}
+.mail{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:15px;cursor:pointer;transition:all .15s;animation:up .25s ease both}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.mail:active{transform:scale(.98);background:var(--card2)}
+.mail:hover{border-color:var(--border2)}
+.mail-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+.mail-from{font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:65%}
+.mail-time{font-family:var(--mono);font-size:9px;color:var(--muted);flex-shrink:0}
+.mail-subject{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
+.mail-preview{font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{text-align:center;padding:60px 20px}
+.empty-icon{font-size:44px;opacity:.2;margin-bottom:12px}
+.empty-h{font-size:15px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.empty-p{font-size:12px;color:var(--dim);line-height:1.6}
+.overlay{position:fixed;inset:0;background:#000000bb;backdrop-filter:blur(6px);z-index:100;display:none;align-items:flex-end}
+.overlay.open{display:flex;animation:fadein .15s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{width:100%;max-height:88vh;background:var(--card);border:1px solid var(--border);border-top-left-radius:22px;border-top-right-radius:22px;display:flex;flex-direction:column;animation:slideup .2s cubic-bezier(.32,1,.32,1)}
+@keyframes slideup{from{transform:translateY(30px)}to{transform:none}}
+.modal-handle{width:32px;height:3px;background:var(--dim);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.modal-hd{padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.modal-from{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:5px}
+.modal-subj{font-size:16px;font-weight:600;color:var(--text);line-height:1.3}
+.modal-date{font-size:10px;color:var(--dim);margin-top:6px}
+.modal-body{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch}
+.modal-txt{font-size:13px;color:var(--muted);line-height:1.8;white-space:pre-wrap;word-break:break-word}
+.modal-ft{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.btn-close{flex:1;padding:12px;background:var(--card2);border:1px solid var(--border);color:var(--muted);border-radius:12px;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer}
+.btn-del{padding:12px 18px;background:var(--red2);border:1px solid #ff4f6b20;color:var(--red);border-radius:12px;font-size:16px;cursor:pointer}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--card2);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:22px;font-size:13px;font-weight:500;z-index:200;white-space:nowrap;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body>
-  <div class="app">
-    <!-- Header -->
-    <div class="header">
-      <div class="logo">📬</div>
-      <div>
-        <div class="header-title">TEMPMAIL</div>
-        <div class="header-sub">Adresse temporaire Telegram</div>
-      </div>
-      <div class="status-dot" id="statusDot"></div>
+<div id="loader"><div class="loader-ring"></div><div class="loader-txt">TEMPMAIL</div></div>
+<div class="wrap" id="app" style="display:none">
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">📬</div>
+      <div><div class="brand-name">TEMPMAIL</div><div class="brand-sub">by Telegram</div></div>
     </div>
-
-```
-<!-- Error -->
-<div class="error-banner" id="errorBanner"></div>
-
-<!-- Email card -->
-<div class="email-card">
-  <div class="email-label">📧 Ton adresse email</div>
-  <div class="email-address loading" id="emailDisplay">Chargement...</div>
-  <button class="copy-btn" id="copyBtn" onclick="copyEmail()">
-    <span id="copyIcon">⎘</span>
-    <span id="copyText">Copier l'adresse</span>
-  </button>
-</div>
-
-<!-- Inbox -->
-<div class="inbox-header">
-  <div style="display:flex;align-items:center">
-    <span class="inbox-title">Boîte de réception</span>
-    <span class="badge" id="countBadge">0</span>
+    <div class="live"><div class="live-dot"></div><span id="liveText">En ligne</span></div>
   </div>
-  <div class="refresh-info">
-    <div class="refresh-dot"></div>
-    <span id="refreshLabel">live</span>
-  </div>
-</div>
-
-<div class="email-list" id="emailList">
-  <div class="empty">
-    <div class="empty-icon">✉️</div>
-    <div class="empty-title">Aucun email pour l'instant</div>
-    <div class="empty-sub">Copie ton adresse et envoie un email.<br>Il apparaîtra ici automatiquement.</div>
-  </div>
-</div>
-```
-
-  </div>
-
-  <!-- Detail modal -->
-
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-    <div class="modal" id="modal">
-      <div class="modal-handle"></div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
-      <div class="modal-from" id="modalFrom"></div>
-      <div class="modal-subject" id="modalSubject"></div>
-      <div class="modal-date" id="modalDate"></div>
-      <div class="modal-divider"></div>
-      <div class="modal-body" id="modalBody"></div>
+  <div class="email-box">
+    <div class="email-top">
+      <div class="email-label">Ton adresse temporaire</div>
+      <div class="email-addr loading" id="emailAddr">chargement...</div>
+    </div>
+    <div class="email-bottom">
+      <button class="btn-copy" id="copyBtn" onclick="copyEmail()">
+        <span id="copyIco">📋</span><span id="copyTxt">Copier l'adresse</span>
+      </button>
+      <button class="btn-regen" id="regenBtn" onclick="refreshInbox()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M1 8A7 7 0 1 0 3.5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M3.5 1v2.5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </div>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <script>
-    // ─── Config ─────────────────────────────────────────────────────────────
-    const BACKEND = 'https://tondomaine.com/api'; // ← Remplace par ton URL backend
-    const REFRESH_INTERVAL = 4000; // 4 secondes
-
-    // ─── Telegram SDK ───────────────────────────────────────────────────────
-    const tg = window.Telegram?.WebApp;
-    let userId = null;
-
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      tg.setHeaderColor('#0a0a0f');
-      tg.setBackgroundColor('#0a0a0f');
-      userId = tg.initDataUnsafe?.user?.id;
-    }
-
-    // Fallback pour les tests hors Telegram
-    if (!userId) {
-      userId = 'DEMO_USER';
-    }
-
-    // ─── State ──────────────────────────────────────────────────────────────
-    let currentEmail = null;
-    let emails = [];
-    let seenIds = new Set();
-    let TTL_MS = 20 * 60 * 1000;
-
-    // ─── Init ────────────────────────────────────────────────────────────────
-    async function init() {
-      await fetchEmail();
-      await fetchInbox();
-      setInterval(fetchInbox, REFRESH_INTERVAL);
-    }
-
-    // ─── Fetch email ─────────────────────────────────────────────────────────
-    async function fetchEmail() {
-      try {
-        const res = await fetch(`${BACKEND}/generate-email?userId=${userId}`);
-        const data = await res.json();
-        currentEmail = data.email;
-
-        const el = document.getElementById('emailDisplay');
-        el.textContent = currentEmail;
-        el.classList.remove('loading');
-        hideError();
-      } catch (e) {
-        showError('Impossible de se connecter au serveur.');
-      }
-    }
-
-    // ─── Fetch inbox ─────────────────────────────────────────────────────────
-    async function fetchInbox() {
-      if (!userId) return;
-      try {
-        const res = await fetch(`${BACKEND}/inbox?userId=${userId}`);
-        const data = await res.json();
-        emails = data.emails || [];
-        
-        // Notif Telegram si nouvel email
-        const newEmails = emails.filter(e => !seenIds.has(e.id));
-        if (newEmails.length > 0 && seenIds.size > 0) {
-          tg?.HapticFeedback?.notificationOccurred('success');
-        }
-        newEmails.forEach(e => seenIds.add(e.id));
-
-        renderInbox();
-        hideError();
-      } catch (e) {
-        // silently fail on refresh
-      }
-    }
-
-    // ─── Render inbox ─────────────────────────────────────────────────────────
-    function renderInbox() {
-      const list = document.getElementById('emailList');
-      const badge = document.getElementById('countBadge');
-      badge.textContent = emails.length;
-
-      if (emails.length === 0) {
-        list.innerHTML = `
-          <div class="empty">
-            <div class="empty-icon">✉️</div>
-            <div class="empty-title">Aucun email pour l'instant</div>
-            <div class="empty-sub">Copie ton adresse et envoie un email.<br>Il apparaîtra ici automatiquement.</div>
-          </div>`;
-        return;
-      }
-
-      list.innerHTML = emails.map((email, i) => {
-        const timeLeft = email.expiresAt - Date.now();
-        const pct = Math.max(0, Math.min(100, (timeLeft / TTL_MS) * 100));
-        const isNew = !seenIds.has(email.id);
-
-        return `
-          <div class="email-item ${isNew ? 'unread' : ''}" 
-               onclick="openEmail(${i})"
-               style="animation-delay:${i * 0.05}s">
-            <div class="email-meta">
-              <span class="email-from">${escHtml(email.from)}</span>
-              <span class="email-time">${formatTime(email.date)}</span>
-            </div>
-            <div class="email-subject">${escHtml(email.subject)}</div>
-            <div class="email-preview">${escHtml((email.body || '').trim().substring(0, 80))}</div>
-            <div class="ttl-bar">
-              <div class="ttl-fill" style="width:${pct}%"></div>
-            </div>
-          </div>`;
-      }).join('');
-    }
-
-    // ─── Open email detail ────────────────────────────────────────────────────
-    function openEmail(index) {
-      const email = emails[index];
-      if (!email) return;
-
-      seenIds.add(email.id);
-
-      document.getElementById('modalFrom').textContent = `De : ${email.from}`;
-      document.getElementById('modalSubject').textContent = email.subject;
-      document.getElementById('modalDate').textContent = new Date(email.date).toLocaleString('fr-FR');
-      document.getElementById('modalBody').textContent = email.body || '(email vide)';
-      document.getElementById('modalOverlay').classList.add('open');
-
-      tg?.HapticFeedback?.selectionChanged();
-    }
-
-    function closeModal(e) {
-      if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-    }
-    function closeModalDirect() {
-      document.getElementById('modalOverlay').classList.remove('open');
-    }
-
-    // ─── Copy ─────────────────────────────────────────────────────────────────
-    async function copyEmail() {
-      if (!currentEmail) return;
-      try {
-        await navigator.clipboard.writeText(currentEmail);
-      } catch {
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = currentEmail;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-      }
-
-      const btn = document.getElementById('copyBtn');
-      const icon = document.getElementById('copyIcon');
-      const text = document.getElementById('copyText');
-      btn.classList.add('copied');
-      icon.textContent = '✓';
-      text.textContent = 'Copié !';
-      tg?.HapticFeedback?.notificationOccurred('success');
-      setTimeout(() => {
-        btn.classList.remove('copied');
-        icon.textContent = '⎘';
-        text.textContent = 'Copier l\'adresse';
-      }, 2000);
-    }
-
-    // ─── Helpers ──────────────────────────────────────────────────────────────
-    function formatTime(ts) {
-      const d = new Date(ts);
-      const now = new Date();
-      const diffMs = now - d;
-      if (diffMs < 60000) return 'À l\'instant';
-      if (diffMs < 3600000) return `il y a ${Math.floor(diffMs/60000)}min`;
-      if (d.toDateString() === now.toDateString()) 
-        return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-      return d.toLocaleDateString('fr-FR');
-    }
-
-    function escHtml(str) {
-      return (str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function showError(msg) {
-      const el = document.getElementById('errorBanner');
-      el.textContent = '⚠️ ' + msg;
-      el.classList.add('show');
-    }
-    function hideError() {
-      document.getElementById('errorBanner').classList.remove('show');
-    }
-
-    // ─── Start ────────────────────────────────────────────────────────────────
-    init();
-  </script>
-
+  <div class="ttl">
+    <div class="ttl-bar"><div class="ttl-fill"></div></div>
+    <span class="ttl-txt">Expire dans 20 min</span>
+  </div>
+  <div class="inbox-head">
+    <span class="inbox-title">Boite de reception</span>
+    <span class="badge" id="badge">0</span>
+  </div>
+  <div class="refresh-row">
+    <div class="refresh-bar"><div class="refresh-fill"></div></div>
+    <span class="refresh-txt">Rafraichissement auto</span>
+  </div>
+  <div class="list" id="list">
+    <div class="empty">
+      <div class="empty-icon">📭</div>
+      <div class="empty-h">Aucun email</div>
+      <div class="empty-p">Les emails envoyes a ton adresse<br>apparaitront ici automatiquement.</div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hd">
+      <div class="modal-from" id="mFrom"></div>
+      <div class="modal-subj" id="mSubj"></div>
+      <div class="modal-date" id="mDate"></div>
+    </div>
+    <div class="modal-body"><div class="modal-txt" id="mBody"></div></div>
+    <div class="modal-ft">
+      <button class="btn-close" onclick="closeModal()">Fermer</button>
+      <button class="btn-del" onclick="deleteMail()">🗑</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+const API='https://tempmail-bot-3kew.onrender.com';
+let userId=null,userEmail=null,emails=[],currentId=null;
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+const user=tg?.initDataUnsafe?.user;
+if(user?.id)userId=user.id.toString();
+if(!userId){const p=new URLSearchParams(location.search);userId=p.get('userId')||'test123';}
+async function init(){
+  try{
+    const r=await fetch(`${API}/generate-email?userId=${userId}`);
+    const d=await r.json();
+    userEmail=d.email;
+    const el=document.getElementById('emailAddr');
+    el.textContent=userEmail;el.classList.remove('loading');
+    await refreshInbox();
+    setInterval(refreshInbox,5000);
+  }catch(e){toast('Erreur de connexion');document.getElementById('liveText').textContent='Hors ligne';}
+  finally{document.getElementById('loader').classList.add('hide');document.getElementById('app').style.display='block';}
+}
+async function refreshInbox(){
+  const btn=document.getElementById('regenBtn');btn.classList.add('spin');
+  try{
+    const r=await fetch(`${API}/inbox?userId=${userId}`);
+    const d=await r.json();emails=d.emails||[];render();
+    const b=document.getElementById('badge');b.textContent=emails.length;b.className='badge'+(emails.length>0?' on':'');
+    document.getElementById('liveText').textContent='En ligne';
+  }catch(e){document.getElementById('liveText').textContent='Hors ligne';}
+  finally{btn.classList.remove('spin');}
+}
+function render(){
+  const list=document.getElementById('list');
+  if(!emails.length){list.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><div class="empty-h">Aucun email</div><div class="empty-p">Les emails envoyes a ton adresse<br>apparaitront ici.</div></div>`;return;}
+  list.innerHTML='';
+  emails.forEach((e,i)=>{
+    const d=document.createElement('div');d.className='mail';d.style.animationDelay=`${i*.04}s`;d.onclick=()=>openMail(e.id);
+    const preview=(e.body||'').replace(/\s+/g,' ').trim().slice(0,70);
+    d.innerHTML=`<div class="mail-row"><span class="mail-from">${esc(e.from)}</span><span class="mail-time">${relTime(e.date)}</span></div><div class="mail-subject">${esc(e.subject)}</div><div class="mail-preview">${esc(preview)||'...'}</div>`;
+    list.appendChild(d);
+  });
+}
+function openMail(id){
+  const e=emails.find(x=>x.id===id);if(!e)return;currentId=id;
+  document.getElementById('mFrom').textContent=`De : ${e.from}`;
+  document.getElementById('mSubj').textContent=e.subject||'(sans objet)';
+  document.getElementById('mDate').textContent=fullDate(e.date);
+  document.getElementById('mBody').textContent=e.body||'(email vide)';
+  document.getElementById('overlay').classList.add('open');
+  tg?.HapticFeedback?.impactOccurred('light');
+}
+function closeModal(ev){
+  if(ev&&ev.target!==document.getElementById('overlay'))return;
+  document.getElementById('overlay').classList.remove('open');currentId=null;
+}
+async function deleteMail(){
+  if(!currentId)return;
+  try{
+    await fetch(`${API}/email/${currentId}?userId=${userId}`,{method:'DELETE'});
+    emails=emails.filter(e=>e.id!==currentId);render();
+    document.getElementById('badge').textContent=emails.length;
+    document.getElementById('badge').className='badge'+(emails.length>0?' on':'');
+    document.getElementById('overlay').classList.remove('open');toast('Supprime');
+  }catch(e){toast('Erreur');}
+}
+async function copyEmail(){
+  if(!userEmail)return;
+  try{await navigator.clipboard.writeText(userEmail);}
+  catch{const t=document.createElement('textarea');t.value=userEmail;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);}
+  document.getElementById('copyIco').textContent='✅';document.getElementById('copyTxt').textContent='Copie !';
+  document.getElementById('copyBtn').classList.add('done');
+  tg?.HapticFeedback?.impactOccurred('medium');toast('Adresse copiee !');
+  setTimeout(()=>{document.getElementById('copyIco').textContent='📋';document.getElementById('copyTxt').textContent="Copier l'adresse";document.getElementById('copyBtn').classList.remove('done');},2000);
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function relTime(ts){const d=new Date(ts),diff=Date.now()-d,m=Math.floor(diff/60000);if(m<1)return'maintenant';if(m<60)return`${m}min`;if(m<1440)return`${Math.floor(m/60)}h`;return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});}
+function fullDate(ts){return new Date(ts).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+init();
+</script>
 </body>
 </html>
