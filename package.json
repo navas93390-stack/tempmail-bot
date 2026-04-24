@@ -2,7 +2,7 @@
   "name": "tempmail-bot",
   "version": "1.0.0",
   "scripts": {
-    "start": "node -e \"const e=require('express'),c=require('cors'),f=require('fs'),p=require('path'),T=require('node-telegram-bot-api'),a=e();a.use(c());a.use(e.json());const D=p.join(__dirname,'db.json'),DOM=process.env.DOMAIN||'tempgram.xyz',PO=process.env.PORT||10000;a.get('/',(q,r)=>r.json({ok:1}));a.get('/generate-email',(q,r)=>{const id=q.query.userId;if(!id)return r.status(400).json({error:'no userId'});let d=f.existsSync(D)?JSON.parse(f.readFileSync(D,'utf8')):{users:{},emails:[]};if(!d.users[id]){d.users[id]={email:id+'@'+DOM};}f.writeFileSync(D,JSON.stringify(d));r.json({email:d.users[id].email});});a.get('/inbox',(q,r)=>{const id=q.query.userId;let d=f.existsSync(D)?JSON.parse(f.readFileSync(D,'utf8')):{users:{},emails:[]};r.json({emails:(d.emails||[]).filter(e=>e.to===id+'@'+DOM&&e.expiresAt>Date.now())});});a.get('/miniapp',(q,r)=>r.sendFile(p.join(__dirname,'miniapp/index.html')));a.listen(PO,()=>console.log('ok '+PO));\""
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.18.2",
