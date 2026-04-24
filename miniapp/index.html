@@ -4,362 +4,90 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-<title>TempGram Mail</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<title>TempGram</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-
 :root{
-–bg:#02020a;
-–s1:#08080f;
-–s2:#0d0d18;
-–s3:#131320;
-–b0:#ffffff06;
-–b1:#ffffff0d;
-–b2:#7b6fff20;
-–accent:#7b6fff;
-–accent2:#a78bfa;
-–accentg:linear-gradient(135deg,#7b6fff,#a78bfa);
-–accentd:#7b6fff12;
-–red:#f43f5e;
-–redd:#f43f5e12;
-–text:#f0f0ff;
-–t2:#8080a0;
-–t3:#30304a;
-–mono:‘JetBrains Mono’,monospace;
-–display:‘Syne’,sans-serif;
+  --bg:#02020a;--s1:#08080f;--s2:#0d0d18;--s3:#131320;
+  --b0:#ffffff06;--b1:#ffffff0d;--b2:#7b6fff20;
+  --accent:#7b6fff;--accent2:#a78bfa;--redd:#f43f5e12;--red:#f43f5e;
+  --text:#f0f0ff;--t2:#8080a0;--t3:#30304a;
+  --mono:"JetBrains Mono",monospace;--display:"Syne",sans-serif;
 }
-
 html,body{height:100%;overflow-x:hidden}
-body{font-family:var(–display);background:var(–bg);color:var(–text);min-height:100vh}
-
-/* ─ animated bg ─ */
-body::before{
-content:’’;position:fixed;inset:0;
-background:
-radial-gradient(ellipse 600px 400px at 80% -10%,#7b6fff08 0%,transparent 70%),
-radial-gradient(ellipse 400px 300px at -10% 80%,#a78bfa06 0%,transparent 70%);
-pointer-events:none;z-index:0;
-}
-
-/* subtle grid */
-body::after{
-content:’’;position:fixed;inset:0;
-background-image:linear-gradient(#ffffff03 1px,transparent 1px),linear-gradient(90deg,#ffffff03 1px,transparent 1px);
-background-size:48px 48px;
-pointer-events:none;z-index:0;
-}
-
+body{font-family:var(--display);background:var(--bg);color:var(--text);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 600px 400px at 80% -10%,#7b6fff08 0%,transparent 70%),radial-gradient(ellipse 400px 300px at -10% 80%,#a78bfa06 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:"";position:fixed;inset:0;background-image:linear-gradient(#ffffff03 1px,transparent 1px),linear-gradient(90deg,#ffffff03 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
 .app{position:relative;z-index:1;max-width:430px;margin:0 auto;padding-bottom:80px;min-height:100vh}
-
-/* ─── LOADER ─── */
-#loader{
-position:fixed;inset:0;background:var(–bg);z-index:999;
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
-transition:opacity .5s ease;
-}
-#loader.out{opacity:0;pointer-events:none}
-
-.loader-logo{
-display:flex;align-items:center;gap:12px;
-}
-.loader-logo-icon{
-width:44px;height:44px;
-background:var(–accentg);
-border-radius:14px;
-display:flex;align-items:center;justify-content:center;
-font-size:22px;
-box-shadow:0 0 30px #7b6fff30;
-}
-.loader-logo-text{
-font-family:var(–display);font-size:22px;font-weight:800;
-background:var(–accentg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-letter-spacing:-.02em;
-}
-.loader-bar{
-width:120px;height:2px;background:var(–b1);border-radius:1px;overflow:hidden;
-}
-.loader-fill{
-height:100%;background:var(–accentg);border-radius:1px;
-animation:loadfill 1.2s cubic-bezier(.4,0,.2,1) forwards;
-}
-@keyframes loadfill{from{width:0}to{width:100%}}
-
-/* ─── HEADER ─── */
-.hdr{
-padding:20px 20px 0;
-display:flex;align-items:center;justify-content:space-between;
-}
+.hdr{padding:24px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-mark{
-width:34px;height:34px;
-background:var(–accentg);
-border-radius:10px;
-display:flex;align-items:center;justify-content:center;
-font-size:17px;
-box-shadow:0 4px 16px #7b6fff25;
-}
-.logo-name{
-font-size:16px;font-weight:800;
-background:var(–accentg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-letter-spacing:-.01em;
-}
-
-.status{
-display:flex;align-items:center;gap:6px;
-padding:5px 11px;border-radius:20px;
-background:var(–s2);border:1px solid var(–b0);
-font-family:var(–mono);font-size:10px;color:var(–t2);
-}
-.dot{
-width:6px;height:6px;border-radius:50%;
-background:#22c55e;
-box-shadow:0 0 6px #22c55e80;
-animation:pulse 2s ease infinite;
-}
-.dot.off{background:var(–red);box-shadow:0 0 6px #f43f5e80}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,#7b6fff,#a78bfa);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px #7b6fff25}
+.logo-name{font-size:17px;font-weight:800;background:linear-gradient(135deg,#7b6fff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.01em}
+.status{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;background:var(--s2);border:1px solid var(--b0);font-family:var(--mono);font-size:10px;color:var(--t2)}
+.dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e80;animation:pulse 2s ease infinite}
+.dot.off{background:var(--red);box-shadow:0 0 6px #f43f5e80}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-
-/* ─── EMAIL CARD ─── */
-.card{
-margin:18px 20px 0;
-background:var(–s1);
-border:1px solid var(–b1);
-border-radius:20px;
-overflow:hidden;
-position:relative;
-}
-.card::before{
-content:’’;position:absolute;top:0;left:0;right:0;height:1px;
-background:linear-gradient(90deg,transparent 0%,#7b6fff60 50%,transparent 100%);
-}
-
+.card{margin:18px 20px 0;background:var(--s1);border:1px solid #7b6fff20;border-radius:20px;overflow:hidden;position:relative}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#7b6fff60,transparent)}
 .card-top{padding:20px 20px 16px}
-
-.card-eyebrow{
-font-family:var(–mono);font-size:9px;font-weight:500;
-letter-spacing:.18em;color:var(–t2);text-transform:uppercase;margin-bottom:10px;
-display:flex;align-items:center;gap:6px;
-}
-.card-eyebrow::before{
-content:’’;width:16px;height:1px;background:var(–accent);opacity:.5;
-}
-
-.card-email{
-font-family:var(–mono);font-size:15px;font-weight:400;
-color:var(–accent2);word-break:break-all;line-height:1.5;
-letter-spacing:-.01em;
-}
-.card-email.ghost{color:var(–t3);animation:shimmer 1.5s ease infinite}
-@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:.7}}
-
-.card-actions{
-display:flex;border-top:1px solid var(–b0);
-}
-
-.act-btn{
-flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
-padding:14px 12px;
-background:transparent;border:none;cursor:pointer;
-font-family:var(–display);font-size:13px;font-weight:600;
-color:var(–t2);
-transition:all .15s ease;
-position:relative;overflow:hidden;
-}
-.act-btn::after{
-content:’’;position:absolute;inset:0;background:var(–accent);opacity:0;transition:opacity .15s;
-}
-.act-btn:active::after{opacity:.06}
-.act-btn + .act-btn{border-left:1px solid var(–b0)}
-
-.act-btn.primary{color:var(–accent2)}
-.act-btn.active{color:#22c55e}
-
-.act-icon{font-size:15px}
-
-/* ttl */
-.ttl-row{
-margin:10px 20px 0;
-display:flex;align-items:center;gap:10px;
-}
-.ttl-track{flex:1;height:1px;background:var(–b1);border-radius:1px;overflow:hidden}
-.ttl-prog{height:100%;background:var(–accentg);animation:drain 1200s linear forwards}
+.card-label{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.18em;color:var(--t2);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.card-label::before{content:"";width:16px;height:1px;background:var(--accent);opacity:.5}
+.card-email{font-family:var(--mono);font-size:14px;color:#a78bfa;word-break:break-all;line-height:1.5}
+.card-actions{display:flex;border-top:1px solid var(--b0)}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 12px;background:transparent;border:none;cursor:pointer;font-family:var(--display);font-size:13px;font-weight:600;color:var(--t2);transition:all .15s}
+.act-btn:active{background:#7b6fff08}
+.act-btn+.act-btn{border-left:1px solid var(--b0)}
+.act-btn.primary{color:#a78bfa}
+.act-btn.ok{color:#22c55e}
+.ttl-row{margin:10px 20px 0;display:flex;align-items:center;gap:10px}
+.ttl-track{flex:1;height:1px;background:var(--b1);border-radius:1px;overflow:hidden}
+.ttl-prog{height:100%;background:linear-gradient(90deg,#7b6fff,#a78bfa);animation:drain 1200s linear forwards}
 @keyframes drain{from{width:100%}to{width:0%}}
-.ttl-label{font-family:var(–mono);font-size:9px;color:var(–t3);white-space:nowrap;letter-spacing:.05em}
-
-/* ─── SECTION HEADER ─── */
-.sec-hdr{
-padding:26px 20px 12px;
-display:flex;align-items:center;justify-content:space-between;
-}
-.sec-title{
-font-size:11px;font-weight:700;
-letter-spacing:.14em;color:var(–t2);text-transform:uppercase;
-}
+.ttl-label{font-family:var(--mono);font-size:9px;color:var(--t3);white-space:nowrap;letter-spacing:.05em}
+.sec-hdr{padding:26px 20px 12px;display:flex;align-items:center;justify-content:space-between}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--t2);text-transform:uppercase}
 .sec-right{display:flex;align-items:center;gap:8px}
-
-.count{
-font-family:var(–mono);font-size:10px;
-padding:3px 10px;border-radius:20px;
-background:var(–s2);border:1px solid var(–b0);color:var(–t2);
-transition:all .2s;
-}
-.count.live{
-background:var(–accentd);border-color:var(–b2);color:var(–accent2);
-}
-
-.sync-bar{width:48px;height:1px;background:var(–b1);overflow:hidden;border-radius:1px}
-.sync-fill{height:100%;background:var(–accent);animation:sync 5s linear infinite}
+.count{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--b0);color:var(--t2);transition:all .2s}
+.count.live{background:#7b6fff12;border-color:#7b6fff20;color:#a78bfa}
+.sync-bar{width:48px;height:1px;background:var(--b1);overflow:hidden;border-radius:1px}
+.sync-fill{height:100%;background:#7b6fff;animation:sync 5s linear infinite}
 @keyframes sync{from{width:100%}to{width:0%}}
-
-/* ─── MAIL LIST ─── */
 .list{padding:0 20px;display:flex;flex-direction:column;gap:6px}
-
-.mail{
-background:var(–s1);
-border:1px solid var(–b0);
-border-radius:16px;
-padding:16px;
-cursor:pointer;
-transition:all .15s ease;
-animation:rise .3s ease both;
-position:relative;overflow:hidden;
-}
+.mail{background:var(--s1);border:1px solid var(--b0);border-radius:16px;padding:16px;cursor:pointer;transition:all .15s;animation:rise .3s ease both;position:relative;overflow:hidden}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-.mail::before{
-content:’’;
-position:absolute;left:0;top:0;bottom:0;width:2px;
-background:var(–accentg);
-opacity:0;transition:opacity .15s;
-}
-.mail:active{transform:scale(.985);background:var(–s2)}
-.mail:active::before{opacity:1}
-
+.mail:active{transform:scale(.985);background:var(--s2)}
 .mail-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
-.mail-from{
-font-size:13px;font-weight:700;color:var(–text);
-overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;
-}
-.mail-time{
-font-family:var(–mono);font-size:9px;color:var(–t2);
-flex-shrink:0;margin-top:2px;
-}
-.mail-sub{font-size:12px;color:var(–t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
-.mail-prev{font-size:11px;color:var(–t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-/* empty */
-.empty{
-padding:60px 20px;text-align:center;
-}
-.empty-glyph{
-width:64px;height:64px;margin:0 auto 16px;
-background:var(–s2);border:1px solid var(–b1);
-border-radius:18px;
-display:flex;align-items:center;justify-content:center;
-font-size:28px;opacity:.4;
-}
-.empty-h{font-size:16px;font-weight:700;color:var(–t2);margin-bottom:6px}
-.empty-p{font-size:12px;color:var(–t3);line-height:1.7;font-family:var(–mono)}
-
-/* ─── MODAL ─── */
-.overlay{
-position:fixed;inset:0;
-background:#00000099;backdrop-filter:blur(8px);
-z-index:100;display:none;align-items:flex-end;
-}
+.mail-from{font-size:13px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px}
+.mail-time{font-family:var(--mono);font-size:9px;color:var(--t2);flex-shrink:0;margin-top:2px}
+.mail-sub{font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
+.mail-prev{font-size:11px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{padding:60px 20px;text-align:center}
+.empty-glyph{width:64px;height:64px;margin:0 auto 16px;background:var(--s2);border:1px solid var(--b1);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;opacity:.4}
+.empty-h{font-size:16px;font-weight:700;color:var(--t2);margin-bottom:6px}
+.empty-p{font-size:12px;color:var(--t3);line-height:1.7;font-family:var(--mono)}
+.overlay{position:fixed;inset:0;background:#00000099;backdrop-filter:blur(8px);z-index:100;display:none;align-items:flex-end}
 .overlay.open{display:flex;animation:fade .15s ease}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-
-.drawer{
-width:100%;max-height:90vh;
-background:var(–s1);
-border:1px solid var(–b1);
-border-bottom:none;
-border-radius:22px 22px 0 0;
-display:flex;flex-direction:column;
-animation:slide .22s cubic-bezier(.32,1,.32,1);
-position:relative;overflow:hidden;
-}
-.drawer::before{
-content:’’;position:absolute;top:0;left:0;right:0;height:1px;
-background:linear-gradient(90deg,transparent,#7b6fff50,transparent);
-}
+.drawer{width:100%;max-height:90vh;background:var(--s1);border:1px solid var(--b1);border-bottom:none;border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:slide .22s cubic-bezier(.32,1,.32,1);position:relative;overflow:hidden}
+.drawer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#7b6fff50,transparent)}
 @keyframes slide{from{transform:translateY(24px)}to{transform:none}}
-
-.drawer-handle{
-width:32px;height:3px;background:var(–b1);
-border-radius:2px;margin:14px auto 0;flex-shrink:0;
-}
-.drawer-hd{
-padding:16px 20px 14px;
-border-bottom:1px solid var(–b0);flex-shrink:0;
-}
-.drawer-from{
-font-family:var(–mono);font-size:10px;color:var(–t2);
-margin-bottom:6px;letter-spacing:.05em;
-}
-.drawer-subj{font-size:17px;font-weight:700;color:var(–text);line-height:1.3}
-.drawer-date{font-family:var(–mono);font-size:9px;color:var(–t3);margin-top:8px}
-
+.drawer-handle{width:32px;height:3px;background:var(--b1);border-radius:2px;margin:14px auto 0;flex-shrink:0}
+.drawer-hd{padding:16px 20px 14px;border-bottom:1px solid var(--b0);flex-shrink:0}
+.drawer-from{font-family:var(--mono);font-size:10px;color:var(--t2);margin-bottom:6px;letter-spacing:.05em}
+.drawer-subj{font-size:17px;font-weight:700;color:var(--text);line-height:1.3}
+.drawer-date{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:8px}
 .drawer-body{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch}
-.drawer-txt{
-font-family:var(–mono);font-size:12px;
-color:var(–t2);line-height:1.9;
-white-space:pre-wrap;word-break:break-word;
-}
-
-.drawer-ft{
-padding:12px 20px 20px;
-border-top:1px solid var(–b0);
-display:flex;gap:8px;flex-shrink:0;
-}
-.btn-x{
-flex:1;padding:13px;
-background:var(–s2);border:1px solid var(–b1);
-color:var(–t2);border-radius:14px;
-font-family:var(–display);font-size:13px;font-weight:600;
-cursor:pointer;transition:all .15s;
-}
-.btn-x:active{background:var(–s3)}
-.btn-trash{
-padding:13px 18px;
-background:var(–redd);border:1px solid #f43f5e20;
-color:var(–red);border-radius:14px;
-font-size:16px;cursor:pointer;transition:all .15s;
-}
-.btn-trash:active{background:#f43f5e20}
-
-/* ─── TOAST ─── */
-.toast{
-position:fixed;bottom:32px;left:50%;
-transform:translateX(-50%) translateY(60px);
-background:var(–s3);
-border:1px solid var(–b1);
-color:var(–text);
-padding:10px 20px;
-border-radius:24px;
-font-size:13px;font-weight:600;
-z-index:200;white-space:nowrap;
-transition:transform .28s cubic-bezier(.34,1.56,.64,1);
-box-shadow:0 8px 32px #00000060;
-}
+.drawer-txt{font-family:var(--mono);font-size:12px;color:var(--t2);line-height:1.9;white-space:pre-wrap;word-break:break-word}
+.drawer-ft{padding:12px 20px 20px;border-top:1px solid var(--b0);display:flex;gap:8px;flex-shrink:0}
+.btn-x{flex:1;padding:13px;background:var(--s2);border:1px solid var(--b1);color:var(--t2);border-radius:14px;font-family:var(--display);font-size:13px;font-weight:600;cursor:pointer}
+.btn-trash{padding:13px 18px;background:var(--redd);border:1px solid #f43f5e20;color:var(--red);border-radius:14px;font-size:16px;cursor:pointer}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--s3);border:1px solid var(--b1);color:var(--text);padding:10px 20px;border-radius:24px;font-size:13px;font-weight:600;z-index:200;white-space:nowrap;transition:transform .28s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px #00000060}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
-
 </head>
 <body>
-
-<div id="loader">
-  <div class="loader-logo">
-    <div class="loader-logo-icon">📬</div>
-    <div class="loader-logo-text">TempGram</div>
-  </div>
-  <div class="loader-bar"><div class="loader-fill"></div></div>
-</div>
-
-<div class="app" id="app" style="display:none">
-
+<div class="app" id="app">
   <div class="hdr">
     <div class="logo">
       <div class="logo-mark">📬</div>
@@ -367,52 +95,36 @@ box-shadow:0 8px 32px #00000060;
     </div>
     <div class="status">
       <div class="dot" id="dot"></div>
-      <span id="statusTxt">En ligne</span>
+      <span id="statusTxt">Connexion...</span>
     </div>
   </div>
-
   <div class="card">
     <div class="card-top">
-      <div class="card-eyebrow">Adresse temporaire</div>
-      <div class="card-email ghost" id="addr">chargement...</div>
+      <div class="card-label">Adresse temporaire</div>
+      <div class="card-email" id="addr">chargement...</div>
     </div>
     <div class="card-actions">
       <button class="act-btn primary" id="copyBtn" onclick="copyAddr()">
-        <span class="act-icon" id="copyIco">⎘</span>
-        <span id="copyTxt">Copier</span>
+        <span id="copyIco">⎘</span><span id="copyTxt">Copier</span>
       </button>
-      <button class="act-btn" id="refreshBtn" onclick="loadInbox()">
-        <span class="act-icon">↻</span>
-        <span>Actualiser</span>
+      <button class="act-btn" onclick="loadInbox()">
+        <span>↻</span><span>Actualiser</span>
       </button>
     </div>
   </div>
-
   <div class="ttl-row">
     <div class="ttl-track"><div class="ttl-prog"></div></div>
     <span class="ttl-label">expire dans 20 min</span>
   </div>
-
   <div class="sec-hdr">
-    <span class="sec-title">Boîte de réception</span>
+    <span class="sec-title">Boite de reception</span>
     <div class="sec-right">
       <div class="sync-bar"><div class="sync-fill"></div></div>
       <span class="count" id="cnt">0</span>
     </div>
   </div>
-
-  <div class="list" id="list">
-    <div class="empty">
-      <div class="empty-glyph">📭</div>
-      <div class="empty-h">Aucun message</div>
-      <div class="empty-p">Les emails arriveront ici<br>automatiquement.</div>
-    </div>
-  </div>
-
+  <div class="list" id="list"></div>
 </div>
-
-<!-- Drawer -->
-
 <div class="overlay" id="overlay" onclick="closeDrawer(event)">
   <div class="drawer">
     <div class="drawer-handle"></div>
@@ -423,151 +135,122 @@ box-shadow:0 8px 32px #00000060;
     </div>
     <div class="drawer-body"><div class="drawer-txt" id="dBody"></div></div>
     <div class="drawer-ft">
-      <button class="btn-x" onclick="closeDrawer()">✕ Fermer</button>
+      <button class="btn-x" onclick="closeDrawer()">Fermer</button>
       <button class="btn-trash" onclick="trashMail()">🗑</button>
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <script>
-const API='https://tempmail-bot-3kew.onrender.com';
+const API="https://tempmail-bot-3kew.onrender.com";
 let uid=null,addr=null,mails=[],curId=null;
-
-const tg=window.Telegram?.WebApp;
+const tg=window.Telegram&&window.Telegram.WebApp;
 if(tg){tg.ready();tg.expand();}
-const u=tg?.initDataUnsafe?.user;
-if(u?.id)uid=u.id.toString();
-if(!uid){uid=new URLSearchParams(location.search).get('userId')||'demo';}
-
+const u=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+if(u&&u.id)uid=String(u.id);
+if(!uid){uid=new URLSearchParams(location.search).get("userId")||"demo";}
+function setOnline(on){
+  document.getElementById("dot").className="dot"+(on?"":" off");
+  document.getElementById("statusTxt").textContent=on?"En ligne":"Hors ligne";
+}
+function showEmpty(){
+  document.getElementById("list").innerHTML='<div class="empty"><div class="empty-glyph">📭</div><div class="empty-h">Aucun message</div><div class="empty-p">Les emails apparaitront ici automatiquement.</div></div>';
+}
 async function boot(){
+  showEmpty();
   try{
-    const r=await fetch(`${API}/generate-email?userId=${uid}`);
+    const r=await fetch(API+"/generate-email?userId="+uid);
     const d=await r.json();
     addr=d.email;
-    const el=document.getElementById('addr');
-    el.textContent=addr;el.classList.remove('ghost');
+    document.getElementById("addr").textContent=addr;
+    setOnline(true);
     await loadInbox();
     setInterval(loadInbox,5000);
   }catch(e){
-    setStatus(false);
-    showToast('Connexion impossible');
-  }finally{
-    setTimeout(()=>{
-      document.getElementById('loader').classList.add('out');
-      document.getElementById('app').style.display='block';
-    },100);
+    setOnline(false);
+    document.getElementById("addr").textContent="Erreur de connexion";
   }
 }
-
 async function loadInbox(){
-  const btn=document.getElementById('refreshBtn');
-  btn.style.opacity='.5';
   try{
-    const r=await fetch(`${API}/inbox?userId=${uid}`);
+    const r=await fetch(API+"/inbox?userId="+uid);
     const d=await r.json();
     mails=d.emails||[];
     render();
-    const c=document.getElementById('cnt');
+    const c=document.getElementById("cnt");
     c.textContent=mails.length;
-    c.className='count'+(mails.length?' live':'');
-    setStatus(true);
-  }catch(e){setStatus(false);}
-  finally{btn.style.opacity='1';}
+    c.className="count"+(mails.length?" live":"");
+    setOnline(true);
+  }catch(e){setOnline(false);}
 }
-
 function render(){
-  const l=document.getElementById('list');
-  if(!mails.length){
-    l.innerHTML=`<div class="empty"><div class="empty-glyph">📭</div><div class="empty-h">Aucun message</div><div class="empty-p">Les emails arriveront ici<br>automatiquement.</div></div>`;
-    return;
-  }
-  l.innerHTML='';
-  mails.forEach((m,i)=>{
-    const d=document.createElement('div');
-    d.className='mail';d.style.animationDelay=`${i*.05}s`;
-    d.onclick=()=>openMail(m.id);
-    const prev=(m.body||'').replace(/\s+/g,' ').trim().slice(0,80);
-    d.innerHTML=`<div class="mail-top"><span class="mail-from">${x(m.from)}</span><span class="mail-time">${ago(m.date)}</span></div><div class="mail-sub">${x(m.subject||'(sans objet)')}</div><div class="mail-prev">${x(prev)||'—'}</div>`;
+  const l=document.getElementById("list");
+  if(!mails.length){showEmpty();return;}
+  l.innerHTML="";
+  mails.forEach(function(m,i){
+    const d=document.createElement("div");
+    d.className="mail";
+    d.style.animationDelay=(i*0.05)+"s";
+    d.onclick=function(){openMail(m.id);};
+    const prev=(m.body||"").replace(/\s+/g," ").trim().slice(0,80);
+    d.innerHTML='<div class="mail-top"><span class="mail-from">'+x(m.from)+'</span><span class="mail-time">'+ago(m.date)+'</span></div><div class="mail-sub">'+x(m.subject||"(sans objet)")+'</div><div class="mail-prev">'+x(prev||"")+'</div>';
     l.appendChild(d);
   });
 }
-
 function openMail(id){
-  const m=mails.find(e=>e.id===id);if(!m)return;
+  const m=mails.find(function(e){return e.id===id;});
+  if(!m)return;
   curId=id;
-  document.getElementById('dFrom').textContent=`De : ${m.from}`;
-  document.getElementById('dSubj').textContent=m.subject||'(sans objet)';
-  document.getElementById('dDate').textContent=full(m.date);
-  document.getElementById('dBody').textContent=m.body||'(vide)';
-  document.getElementById('overlay').classList.add('open');
-  tg?.HapticFeedback?.impactOccurred('light');
+  document.getElementById("dFrom").textContent="De : "+m.from;
+  document.getElementById("dSubj").textContent=m.subject||"(sans objet)";
+  document.getElementById("dDate").textContent=full(m.date);
+  document.getElementById("dBody").textContent=m.body||"(vide)";
+  document.getElementById("overlay").classList.add("open");
+  if(tg&&tg.HapticFeedback)tg.HapticFeedback.impactOccurred("light");
 }
-
 function closeDrawer(ev){
-  if(ev&&ev.target!==document.getElementById('overlay'))return;
-  document.getElementById('overlay').classList.remove('open');curId=null;
+  if(ev&&ev.target!==document.getElementById("overlay"))return;
+  document.getElementById("overlay").classList.remove("open");
+  curId=null;
 }
-
 async function trashMail(){
   if(!curId)return;
   try{
-    await fetch(`${API}/email/${curId}?userId=${uid}`,{method:'DELETE'});
-    mails=mails.filter(e=>e.id!==curId);
+    await fetch(API+"/email/"+curId+"?userId="+uid,{method:"DELETE"});
+    mails=mails.filter(function(e){return e.id!==curId;});
     render();
-    document.getElementById('cnt').textContent=mails.length;
-    document.getElementById('cnt').className='count'+(mails.length?' live':'');
-    document.getElementById('overlay').classList.remove('open');
-    showToast('Supprimé');
-    tg?.HapticFeedback?.notificationOccurred('success');
-  }catch(e){showToast('Erreur');}
+    document.getElementById("cnt").textContent=mails.length;
+    document.getElementById("cnt").className="count"+(mails.length?" live":"");
+    document.getElementById("overlay").classList.remove("open");
+    showToast("Supprime");
+  }catch(e){showToast("Erreur");}
 }
-
 async function copyAddr(){
   if(!addr)return;
   try{await navigator.clipboard.writeText(addr);}
-  catch{const t=document.createElement('textarea');t.value=addr;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);}
-  const btn=document.getElementById('copyBtn');
-  document.getElementById('copyIco').textContent='✓';
-  document.getElementById('copyTxt').textContent='Copié !';
-  btn.classList.add('active');
-  tg?.HapticFeedback?.impactOccurred('medium');
-  showToast('Adresse copiée');
-  setTimeout(()=>{
-    document.getElementById('copyIco').textContent='⎘';
-    document.getElementById('copyTxt').textContent='Copier';
-    btn.classList.remove('active');
+  catch(e){const t=document.createElement("textarea");t.value=addr;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);}
+  document.getElementById("copyIco").textContent="✓";
+  document.getElementById("copyTxt").textContent="Copie !";
+  document.getElementById("copyBtn").classList.add("ok");
+  if(tg&&tg.HapticFeedback)tg.HapticFeedback.impactOccurred("medium");
+  showToast("Adresse copiee");
+  setTimeout(function(){
+    document.getElementById("copyIco").textContent="⎘";
+    document.getElementById("copyTxt").textContent="Copier";
+    document.getElementById("copyBtn").classList.remove("ok");
   },2000);
 }
-
-function setStatus(on){
-  document.getElementById('dot').className='dot'+(on?'':' off');
-  document.getElementById('statusTxt').textContent=on?'En ligne':'Hors ligne';
-}
-
-function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
+function x(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function ago(ts){
   const d=new Date(ts),diff=Date.now()-d,m=Math.floor(diff/60000);
-  if(m<1)return'maintenant';if(m<60)return m+'min';
-  if(m<1440)return Math.floor(m/60)+'h';
-  return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+  if(m<1)return"maintenant";if(m<60)return m+"min";
+  if(m<1440)return Math.floor(m/60)+"h";
+  return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"});
 }
-
-function full(ts){
-  return new Date(ts).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;
-  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
-}
-
+function full(ts){return new Date(ts).toLocaleString("fr-FR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"});}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},2500);}
 boot();
 </script>
-
 </body>
 </html>
