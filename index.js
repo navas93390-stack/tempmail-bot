@@ -1,7 +1,7 @@
 process.on("uncaughtException",function(e){console.log(e.message);});
 const express=require("express"),cors=require("cors"),fs=require("fs"),path=require("path"),Bot=require("node-telegram-bot-api");
 const app=express();app.use(cors());app.use(express.json());
-const DB=path.join(__dirname,"db.json"),DOM=process.env.DOMAIN||"tempgram.xyz",TTL=20,TOK=process.env.BOT_TOKEN,RURL=process.env.RENDER_URL||"https://tempmail-bot-3kew.onrender.com";
+const DB=path.join(__dirname,"db.json"),DOM=process.env.DOMAIN||"tempgram.xyz",TTL=20,TOK=process.env.BOT_TOKEN,RURL=(process.env.RENDER_URL||"https://tempmail-bot-3kew.onrender.com").replace(/\/+$/,"");
 const bot=new Bot(TOK,{webHook:true});
 bot.setWebHook(RURL+"/bot"+TOK).catch(function(e){console.log(e.message);});
 function gdb(){try{return fs.existsSync(DB)?JSON.parse(fs.readFileSync(DB,"utf8")):{users:{},emails:[]};}catch(e){return{users:{},emails:[]};}}
@@ -15,4 +15,3 @@ app.delete("/email/:id",function(q,r){const d=gdb(),i=d.emails.findIndex(functio
 app.get("/miniapp",function(q,r){r.sendFile(path.join(__dirname,"miniapp/index.html"));});
 app.get("/",function(q,r){r.json({ok:true});});
 app.listen(process.env.PORT||10000,function(){console.log("live");});
-
